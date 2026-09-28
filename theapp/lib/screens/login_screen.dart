@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:theapp/root.dart';
 import '../models/user.dart';
 
@@ -10,6 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // Controller untuk membaca inputan teks username dan password
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isLoggedin = false;
@@ -18,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
     String username = _usernameController.text;
     String password = _passwordController.text;
 
+    // Cek kecocokan data input dengan list users yang ada di models/user.dart
     if (users.any(
       (user) => user.username == username && user.password == password,
     )) {
@@ -25,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
         isLoggedin = true;
       });
 
+      // Feedback notifikasi login sukses
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Login Berhasil!'),
@@ -32,11 +35,13 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
 
+      // Pindah ke halaman Root (bawa data username) & tutup halaman login
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Root(username: username)),
       );
     } else {
+      // Feedback notifikasi login gagal
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Login gagal! Username atau password salah.'),
@@ -73,27 +78,35 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  // 1. INPUT USERNAME
                   TextField(
                     controller: _usernameController,
                     decoration: InputDecoration(
                       labelText: 'Username',
+                      prefixIcon: const Icon(Icons.person_outline),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
                   const SizedBox(height: 16),
+
+                  // 2. INPUT PASSWORD (obscureText: true untuk sensor bintang-bintang)
                   TextField(
                     controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      prefixIcon: const Icon(Icons.lock_outline),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  // 3. TOMBOL SUBMIT LOGIN
                   SizedBox(
                     width: double.infinity,
                     height: 48,

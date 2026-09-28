@@ -3,12 +3,13 @@ import '../models/user.dart';
 import 'login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final String username;
+  final String username; // Menerima data username dari Root
 
   const ProfileScreen({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
+    // Cari data user lengkap berdasarkan username dari models/user.dart
     final user = users.firstWhere(
       (u) => u.username == username,
       orElse: () => User(username: username, password: '', name: 'Pengguna'),
@@ -27,6 +28,8 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 10),
+
+            // 1. AVATAR ICON USER
             Center(
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -42,6 +45,8 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
+
+            // 2. NAMA DAN USERNAME UTAMA
             Text(
               user.name,
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -51,6 +56,8 @@ class ProfileScreen extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: Colors.grey[600]),
             ),
             const SizedBox(height: 24),
+
+            // 3. CARD RINCIAN INFORMASI AKUN
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -67,6 +74,8 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
+
+            // 4. TOMBOL LOGOUT (Kembali ke LoginPage & bersihkan riwayat route)
             SizedBox(
               width: double.infinity,
               height: 46,
@@ -96,6 +105,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
+  // Helper widget untuk satu baris info profil
   Widget _buildProfileRow(IconData icon, String label, String value) {
     return Row(
       children: [
