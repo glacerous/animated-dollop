@@ -1,13 +1,37 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import '../models/dest.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final DestinationModel destination;
 
   const DetailScreen({super.key, required this.destination});
 
   @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  bool isFavorite = false;
+
+  void _toggleFavorite() {
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          isFavorite ? 'Ditambahkan ke favorit' : 'Dihapus dari favorit',
+        ),
+        duration: const Duration(seconds: 1),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final destination = widget.destination;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -15,12 +39,21 @@ class DetailScreen extends StatelessWidget {
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
         elevation: 0,
+        actions: [
+          IconButton(
+            tooltip: isFavorite ? 'Hapus dari favorit' : 'Tambah ke favorit',
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red : Colors.white,
+            ),
+            onPressed: _toggleFavorite,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 1. HEADER GAMBAR FULL LEBAR (Tanpa margin atas)
             SizedBox(
               width: double.infinity,
               height: 250,
@@ -39,10 +72,8 @@ class DetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-
-            // 2. SHEET KONTEN
             Transform.translate(
-              offset: const Offset(0, -20), // Membuat sheet sedikit menumpuk ke atas gambar
+              offset: const Offset(0, -20),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                 decoration: const BoxDecoration(
@@ -52,7 +83,6 @@ class DetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // A. KATEGORI BADGE & LOKASI
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -77,26 +107,16 @@ class DetailScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 12),
-
-                    // B. NAMA UTAMA
                     Text(
                       destination.name,
                       style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
-
-                    // C. KEY-VALUE ITEMS (MINIMALIS & BERSIH)
-                    // Key-value details:
                     _buildRowItem(Icons.star_outline_rounded, "Fasilitas", destination.attraction),
                     _buildRowItem(Icons.access_time_rounded, "Waktu Buka", destination.openingHours),
                     _buildRowItem(Icons.confirmation_number_outlined, "Info Tiket", destination.ticketInfo),
                     _buildRowItem(Icons.link_rounded, "Sumber", destination.wikipediaUrl),
-                    // Jika data berupa List<String>:
-                    // _buildRowItem(Icons.local_activity_outlined, "Aktivitas", destination.activities.join(', ')),
-
                     const Divider(height: 32),
-
-                    // D. FREE TEXT / DESKRIPSI BEBAS DI BAWAH
                     const Text(
                       "Deskripsi",
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -107,7 +127,7 @@ class DetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[800],
-                        height: 1.6, // Spasi baris lega & enak dibaca
+                        height: 1.6,
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -121,9 +141,6 @@ class DetailScreen extends StatelessWidget {
     );
   }
 
-  // =========================================================================
-  // HELPER ROW ITEM: Minimalis, Bersih, Anti-Jiplak
-  // =========================================================================
   Widget _buildRowItem(IconData icon, String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14.0),
@@ -150,13 +167,3 @@ class DetailScreen extends StatelessWidget {
     );
   }
 }
-
-/* =========================================================================
-   COMMON ICONS REFERENCE:
-   - Waktu / Jam     : Icons.access_time_rounded / Icons.schedule_outlined
-   - Tiket / Biaya   : Icons.confirmation_number_outlined / Icons.payments_outlined
-   - Tempat / Lokasi : Icons.location_on_outlined / Icons.map_outlined
-   - Fasilitas       : Icons.star_outline_rounded / Icons.park_outlined
-   - Link / Web      : Icons.link_rounded / Icons.info_outline
-   - Hewan / Makanan : Icons.pets_outlined / Icons.restaurant_outlined
-   ========================================================================= */
