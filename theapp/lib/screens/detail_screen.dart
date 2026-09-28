@@ -30,6 +30,17 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
+  // --- FITUR TAMBAHAN: FUNGSI PESAN / SEWA / BELI ---
+  void _bookItem() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Berhasil memesan tiket !'),
+        backgroundColor: Colors.teal,
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final destination = widget.destination;
@@ -126,6 +137,25 @@ class _DetailScreenState extends State<DetailScreen> {
                       destination.name,
                       style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
+                    const SizedBox(height: 12),
+
+                    // --- [POSIBILITAS TAMBAHAN]: RATING BINTANG ---
+                    // (Bisa dihapus jika model tidak punya rating)
+                    Row(
+                      children: [
+                        const Icon(Icons.star, color: Colors.amber, size: 20),
+                        const SizedBox(width: 4),
+                        const Text(
+                          "4.8", // Ganti dengan field rating jika ada (misal: destination.rating)
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          "(120+ ulasan)",
+                          style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 20),
 
                     // ==========================================
@@ -156,6 +186,52 @@ class _DetailScreenState extends State<DetailScreen> {
                         fontSize: 14,
                         color: Colors.grey[800],
                         height: 1.6, // Jarak spasi baris agar enak dibaca
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+
+                    // ==========================================
+                    // 5. [POSIBILITAS TAMBAHAN]: TOMBOL AKSI UTAMA & TOMBOL KEMBALI
+                    // ==========================================
+                    // Tombol Pesan / Booking
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton.icon(
+                        onPressed: _bookItem,
+                        icon: const Icon(Icons.shopping_bag_outlined),
+                        label: const Text(
+                          "Pesan Sekarang",
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.teal,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          elevation: 1,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Tombol Kembali Manual (Navigator.pop) sesuai materi praktikum
+                    SizedBox(
+                      width: double.infinity,
+                      height: 44,
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.pop(context); // Kembali ke halaman sebelumnya
+                        },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.grey[700],
+                          side: BorderSide(color: Colors.grey.shade300),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text("Kembali"),
                       ),
                     ),
                     const SizedBox(height: 24),

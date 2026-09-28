@@ -7,6 +7,39 @@ class ProfileScreen extends StatelessWidget {
 
   const ProfileScreen({super.key, required this.username});
 
+  // --- FITUR TAMBAHAN: DIALOG KONFIRMASI LOGOUT ---
+  void _confirmLogout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        title: const Text('Konfirmasi Logout'),
+        content: const Text('Apakah Anda yakin ingin keluar dari akun?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context), // Tutup dialog
+            child: const Text('Batal', style: TextStyle(color: Colors.grey)),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red.shade600,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.pop(context); // Tutup dialog dulu
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                (route) => false,
+              );
+            },
+            child: const Text('Ya, Logout'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = users.firstWhere(
@@ -27,6 +60,7 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 10),
+            // Avatar Profil
             Center(
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -51,6 +85,7 @@ class ProfileScreen extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: Colors.grey[600]),
             ),
             const SizedBox(height: 24),
+            // Card Rincian Akun
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -67,17 +102,12 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
+            // Tombol Logout dengan Pop-up Konfirmasi
             SizedBox(
               width: double.infinity,
               height: 46,
               child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    (route) => false,
-                  );
-                },
+                onPressed: () => _confirmLogout(context), // Panggil fungsi dialog
                 icon: const Icon(Icons.logout),
                 label: const Text('Logout', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                 style: ElevatedButton.styleFrom(

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:theapp/root.dart';
 import '../models/user.dart';
 
@@ -13,6 +13,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isLoggedin = false;
+
+  // --- FITUR TAMBAHAN: SHOW / HIDE PASSWORD ---
+  bool _obscurePassword = true;
 
   void _login() {
     String username = _usernameController.text;
@@ -73,27 +76,47 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  // 1. INPUT USERNAME
                   TextField(
                     controller: _usernameController,
                     decoration: InputDecoration(
                       labelText: 'Username',
+                      prefixIcon: const Icon(Icons.person_outline), // Icon user di kiri
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
                   const SizedBox(height: 16),
+
+                  // 2. INPUT PASSWORD DENGAN TOGGLE ICON MATA (SHOW / HIDE)
                   TextField(
                     controller: _passwordController,
-                    obscureText: true,
+                    obscureText: _obscurePassword, // Mengatur sensor bintang-bintang
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      prefixIcon: const Icon(Icons.lock_outline), // Icon gembok di kiri
+                      suffixIcon: IconButton(
+                        // Icon mata untuk show/hide password
+                        icon: Icon(
+                          _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                      ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
                   const SizedBox(height: 24),
+
+                  // 3. TOMBOL LOGIN
                   SizedBox(
                     width: double.infinity,
                     height: 48,
