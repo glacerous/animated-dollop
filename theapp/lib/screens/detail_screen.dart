@@ -130,7 +130,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
                     // ==========================================
                     // 3. DAFTAR INFO DETAIL (KEY-VALUE)
-                    // Tinggal tambah / hapus baris _buildRowItem sesuai soal kuis
+                    // Tinggal tambah / hapus baris _buildRowItem as needed
                     // ==========================================
                     _buildRowItem(Icons.star_outline_rounded, "Fasilitas", destination.attraction),
                     _buildRowItem(Icons.access_time_rounded, "Waktu Buka", destination.openingHours),

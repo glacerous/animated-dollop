@@ -1,29 +1,29 @@
 ﻿/* =========================================================================
-   PANDUAN TIPE DATA YANG MUNGKIN MUNCUL DI SOAL KUIS:
+   COMMON DATA TYPES REFERENCE:
    
-   1. String       : Untuk teks biasa
-                     Contoh: String name, String category, String imageUrl
-                     Penggunaan di UI: Text(item.name)
+   1. String       : For standard text values
+                     Example: String name, String category, String imageUrl
+                     UI Usage: Text(item.name)
                      
-   2. int          : Untuk bilangan bulat (harga, stok, tinggi, durasi)
-                     Contoh: int price, int stock, int height
-                     Penggunaan di UI: Text('Rp ') atau Text(' cm')
+   2. int          : For whole numbers (price, stock, height, duration)
+                     Example: int price, int stock, int height
+                     UI Usage: Text('Rp ') or Text(' cm')
                      
-   3. double       : Untuk desimal / pecahan (rating, berat, koordinat)
-                     Contoh: double rating, double weight
-                     Penggunaan di UI: Text(' / 5.0') atau Text(' kg')
+   3. double       : For floating point decimals (rating, weight, distance)
+                     Example: double rating, double weight
+                     UI Usage: Text(' / 5.0') or Text(' kg')
                      
-   4. bool         : Untuk nilai true/false (tersedia, favorit, diskon)
-                     Contoh: bool isAvailable, bool isDiscount
-                     Penggunaan di UI: item.isAvailable ? Text('Tersedia') : Text('Habis')
+   4. bool         : For boolean flags (status, availability)
+                     Example: bool isAvailable, bool isDiscount
+                     UI Usage: item.isAvailable ? Text('Available') : Text('Out of Stock')
                      
-   5. List<String> : Untuk kumpulan teks (tags, fasilitas, aktivitas, bahan)
-                     Contoh: List<String> activities, List<String> ingredients
-                     Penggunaan di UI (PALING GAMPANG): Text(item.activities.join(', '))
+   5. List<String> : For collections of text items (tags, facilities, activities)
+                     Example: List<String> activities, List<String> tags
+                     UI Usage: Text(item.activities.join(', '))
                      
-   6. List<String> : Untuk kumpulan banyak foto (galeri gambar)
-                     Contoh: List<String> imageGallery
-                     Penggunaan di UI: Image.network(item.imageGallery[0])
+   6. List<String> : For image gallery URLs
+                     Example: List<String> imageGallery
+                     UI Usage: Image.network(item.imageGallery[0])
    ========================================================================= */
 
 class DestinationModel {
@@ -37,11 +37,6 @@ class DestinationModel {
   String imageUrl;
   String wikipediaUrl;
 
-  // CONTOH JIKA ADA FIELD LAIN DI KUIS:
-  // int price;
-  // double rating;
-  // List<String> facilities;
-
   DestinationModel({
     required this.name,
     required this.category,
@@ -52,9 +47,6 @@ class DestinationModel {
     required this.attraction,
     required this.imageUrl,
     required this.wikipediaUrl,
-    // this.price,
-    // this.rating,
-    // this.facilities,
   });
 }
 
@@ -171,3 +163,4 @@ List<DestinationModel> destinationList = [
     wikipediaUrl: "https://id.wikipedia.org/wiki/Parangtritis",
   ),
 ];
+
