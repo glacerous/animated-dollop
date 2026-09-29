@@ -2,14 +2,66 @@
 import '../models/user.dart';
 import 'login_screen.dart';
 
+/* =========================================================================
+   VARIASI PROFILE DENGAN DIALOG KONFIRMASI LOGOUT:
+   - Sering kali pada materi interaksi, logout tidak langsung terjadi saat
+     tombol ditekan, melainkan memunculkan showDialog (AlertDialog)
+     dengan pilihan 'Batal' atau 'Keluar'.
+   ========================================================================= */
+
 class ProfileScreen extends StatelessWidget {
-  final String username; // Menerima data username dari Root
+  final String username;
 
   const ProfileScreen({super.key, required this.username});
 
+  // Fungsi untuk memunculkan modal dialog konfirmasi
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Row(
+            children: const [
+              Icon(Icons.warning_amber_rounded, color: Colors.orange),
+              SizedBox(width: 8),
+              Text('Konfirmasi'),
+            ],
+          ),
+          content: const Text('Apakah Anda yakin ingin keluar dari aplikasi?'),
+          actions: [
+            // Pilihan 1: Batal (Tutup dialog saja)
+            TextButton(
+              onPressed: () {
+                Navigator.pop(dialogContext);
+              },
+              child: const Text('Batal'),
+            ),
+            // Pilihan 2: Keluar (Jalankan navigasi logout)
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red.shade600,
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pop(dialogContext); // Tutup dialog dulu
+                // Lalu navigasi kembali ke login dan hapus seluruh history stack
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  (route) => false,
+                );
+              },
+              child: const Text('Keluar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Cari data user lengkap berdasarkan username dari models/user.dart
     final user = users.firstWhere(
       (u) => u.username == username,
       orElse: () => User(username: username, password: '', name: 'Pengguna'),
@@ -29,7 +81,7 @@ class ProfileScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 10),
 
-            // 1. AVATAR ICON USER
+            // Avatar Profil
             Center(
               child: Container(
                 padding: const EdgeInsets.all(20),
@@ -37,27 +89,23 @@ class ProfileScreen extends StatelessWidget {
                   color: Colors.teal.shade50,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
-                  Icons.person,
-                  size: 70,
-                  color: Colors.teal,
-                ),
+                child: const Icon(Icons.person, size: 70, color: Colors.teal),
               ),
             ),
             const SizedBox(height: 16),
 
-            // 2. NAMA DAN USERNAME UTAMA
+            // Nama & Username
             Text(
               user.name,
               style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             Text(
-              '@',
+              '@${user.username}',
               style: TextStyle(fontSize: 14, color: Colors.grey[600]),
             ),
             const SizedBox(height: 24),
 
-            // 3. CARD RINCIAN INFORMASI AKUN
+            // Card Informasi Akun
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -75,26 +123,18 @@ class ProfileScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
 
-            // 4. TOMBOL LOGOUT (Kembali ke LoginPage & bersihkan riwayat route)
+            // Tombol Logout memicu dialog konfirmasi
             SizedBox(
               width: double.infinity,
               height: 46,
               child: ElevatedButton.icon(
-                onPressed: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    (route) => false,
-                  );
-                },
+                onPressed: () => _showLogoutDialog(context),
                 icon: const Icon(Icons.logout),
                 label: const Text('Logout', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red.shade600,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   elevation: 1,
                 ),
               ),
@@ -105,21 +145,14 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // Helper widget untuk satu baris info profil
   Widget _buildProfileRow(IconData icon, String label, String value) {
     return Row(
       children: [
         Icon(icon, size: 20, color: Colors.teal),
         const SizedBox(width: 12),
-        Text(
-          label,
-          style: TextStyle(fontSize: 13, color: Colors.grey[600]),
-        ),
+        Text(label, style: TextStyle(fontSize: 13, color: Colors.grey[600])),
         const Spacer(),
-        Text(
-          value,
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-        ),
+        Text(value, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
       ],
     );
   }
