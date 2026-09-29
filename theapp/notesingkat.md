@@ -1,4 +1,4 @@
-﻿# Catatan Singkat Alur Kodingan Aplikasi (Gaya Santai & Istilah Teknis)
+﻿# Catatan Singkat Alur Kodingan Aplikasi (Alur Logika & Istilah Teknis)
 
 Catatan ini menjelaskan alur pembuatan dan cara kerja aplikasi dari awal sampai akhir, seolah kamu lagi jelasin langsung ke teman atau dosen. Setiap istilah teknis ("sebutan kerennya") ditulis jelas biar gampang dipahami.
 
